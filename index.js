@@ -1,6 +1,5 @@
 const ping = require('mcpe-ping');
 function on_ping(e){
-    if(e.group_id != NIL._vanilla.self_Id)return;
     let text = getText(e);
     if(text.startsWith("!motdpe")){
         if(text.split(' ').length == 1){e.reply('请指定一个motdpe地址！',true);return};
