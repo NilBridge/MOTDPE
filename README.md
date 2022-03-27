@@ -1,10 +1,16 @@
 # MOTDPE
 Ping an MCPE server
 
-# How to use
+## 装载
 
-```
-you: !motdpe XXXXX:XXX
+在NilBridge的**根目录**执行
 
-robot: result
+``` bash
+git clone https://github.com/NilBridge/MOTDPE.git modules/motdpe
 ```
+然后重启NilBridge
+
+## 使用
+
+ - !motdpe <ip>
+ - !motdpe <ip:端口>
