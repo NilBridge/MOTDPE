@@ -1,46 +1,27 @@
-const ping = require('mcpe-ping');
-function on_ping(e){
-    let text = getText(e);
-    if(text.startsWith("!motdpe")){
-        if(text.split(' ').length == 1){e.reply('请指定一个motdpe地址！',true);return};
-        var target = text.substring(8);
-        var host = target;
-        var port = 19132;
-        if(target.indexOf(':') != -1){
-            port = Number(target.split(':')[1]);
-            host = target.split(':')[0];
-        }
-        ping(host,port,(err,dt)=>{
-            try{
-                if(err != null){
-                    e.reply('服务器离线',true);
-                    return;
-                }
-                var inf = dt.advertise.split(';');
-                var str = `[MCBE服务器信息]\n协议版本：${inf[2]}\n游戏版本：${dt.version}\n描述文本：${dt.cleanName}\n在线人数：${dt.currentPlayers}/${dt.maxPlayers}\n存档名称：${inf[7]}\n游戏模式：${inf[8]}`
-                e.reply(str,true);
-            }catch(err){
-                e.reply('motd出错：'+err);
-            }
-            
-        });
-    }
-}
-
-function getText(e) {
-    var rt = '';
-    for (i in e.message) {
-        switch (e.message[i].type) {
-            case "text":
-                rt += e.message[i].text;
-                break;
-        }
-    }
-    return rt;
-}
+const request = require("sync-request");
 
 function onStart(api){
-    api.listen('onMainMessageReceived',on_ping);
+    api.regCMD('motdpe','查询基岩板服务器',(arg)=>{
+        let obj = request('GET',`http://motdbe.blackbe.xyz/api?host=${arg[0]}`);
+        if(obj.statusCode == 200){
+            let data = JSON.parse(obj.getBody('utf8'));
+            if(data.status == 'online'){
+                return [
+                    `[MCBE服务器信息]`,
+                    `协议版本：${data.agreement}`,
+                    `游戏版本：${data.version}`,
+                    `描述文本：${data.motd}`,
+                    `在线人数：${data.online}/${data.max}`,
+                    `存档名称：${data.level_name}`,
+                    'motdapi来自motd.blackbe.xyz'
+                ]
+            }else{
+                return '服务器离线';
+            }
+        }else{
+            return '云黑api连接失败，经检查motdbe.blackbe.xyz是否可以访问';
+        }
+    });
 }
 
 function onStop(){
