@@ -10,6 +10,8 @@ git clone https://github.com/NilBridge/MOTDPE.git modules/motdpe
 ```
 然后重启NilBridge
 
+或者`mgm install motdpe`
+
 ## 使用
 
  - !motdpe <ip>
