@@ -1,4 +1,5 @@
 {
+  "name":"motdpe",
   "author": "lition",
   "version": "1.0.1",
     "description": "ping an mcpe server",
@@ -8,3 +9,4 @@
         "url": "https://github.com/NilBridge/motdpe"
     }
 }
+
